@@ -1,29 +1,52 @@
-import refs from './js/refs';
-import colors from './js/colors';
+class CountdownTimer {
+    constructor({ selector, targetDate }) {
+        this.selector = selector;
+        this.targetDate = targetDate;
+        this.refs = this.getRefs(this.selector);
+        this.start();
+    }
 
-const { body, startBtn, stopBtn } = refs;
-let timerId = null;
+    start() {
+        let timerValue = document.querySelectorAll(`${this.selector} .value`);
+        setInterval(() => {
+            const currentTime = Date.now();
+            const deltaTime = this.targetDate - currentTime;
+            this.updateClockface(this.getTimeComponents(deltaTime));
+        }, 1000);
+    }
 
+    getTimeComponents(time) {
+        const days = this.pad(Math.floor(time / (1000 * 60 * 60 * 24)));
+        const hours = this.pad(Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+        const mins = this.pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
+        const secs = this.pad(Math.floor((time % (1000 * 60)) / 1000));
+        return { days, hours, mins, secs };
+    }
 
-const randomIntegerFromInterval = (min, max) => {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-};
+    pad(value) {
+        return String(value).padStart(2, '0');
+    };
 
-startBtn.addEventListener('click', onStartBtnClick);
-stopBtn.addEventListener('click', onStopBtnClick);
+    updateClockface({ days, hours, mins, secs }) {
+        this.refs.days.textContent = days;
+        this.refs.hours.textContent = hours;
+        this.refs.mins.textContent = mins;
+        this.refs.secs.textContent = secs;
+    }
 
-function onStartBtnClick() {
-    timerId = setInterval(changeColor, 1000);
-    startBtn.disabled = true;
-};
+    getRefs(selector) {
+        const ourTimer = document.querySelector(selector);
+        const refs = {
+            days: ourTimer.querySelector('[data-value = "days"]'),
+            hours: ourTimer.querySelector('[data-value = "hours"]'),
+            mins: ourTimer.querySelector('[data-value = "mins"]'),
+            secs: ourTimer.querySelector('[data-value = "secs"]'),
+        };
+        return refs;
+    }
+}
 
-function changeColor(e) {
-    const currentColor = colors[randomIntegerFromInterval(0, colors.length - 1)];
-
-    body.style.backgroundColor = currentColor;
-};
-
-function onStopBtnClick() {
-    clearInterval(timerId);
-    startBtn.disabled = false;
-};
+const myBirthdayTimer = new CountdownTimer({
+    selector: '#timer-1',
+    targetDate: new Date('Apr 05, 2022'),
+});
