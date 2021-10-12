@@ -5,4 +5,4 @@ parcelRequire=function(e,r,t,n){var i,o="function"==typeof parcelRequire&&parcel
 },{}],"Focm":[function(require,module,exports) {
 "use strict";var t=n(require("./js/refs")),e=n(require("./js/colors"));function n(t){return t&&t.__esModule?t:{default:t}}const{body:l,startBtn:r,stopBtn:o}=t.default;let s=null;const a=(t,e)=>Math.floor(Math.random()*(e-t+1)+t);function d(){s=setInterval(c,1e3),r.disabled=!0}function c(t){const n=e.default[a(0,e.default.length-1)];l.style.backgroundColor=n}function u(){clearInterval(s),r.disabled=!1}r.addEventListener("click",d),o.addEventListener("click",u);
 },{"./js/refs":"VyiV","./js/colors":"oLA8"}]},{},["Focm"], null)
-//# sourceMappingURL=/goit-js-hw-11-color-switch/src.e2962988.js.map
+//# sourceMappingURL=/goit-js-hw-11-timer/src.e2962988.js.map
